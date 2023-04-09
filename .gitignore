@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 # VS code
-.vscode
+.vscode/
+.artifact\Stage00_data_ingestion
