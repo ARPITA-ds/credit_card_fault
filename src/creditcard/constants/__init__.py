@@ -10,7 +10,7 @@ CURRENT_TIME_STAMP = get_current_time_stamp()
 
 CONFIG_DIR = os.path.join(ROOT_DIR,'config')
 
-CONFIG_FILE_PATH = Path("config/config.yaml")
+CONFIG_FILE_PATH = Path("configs/config.yaml")
 PARAMS_FILE_PATH = Path("params.yaml")
 
 DATABASE_FILE_NAME = "database.yaml"
