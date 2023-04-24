@@ -99,3 +99,48 @@ class ConfigurationManager:
             return training_pipeline_config
         except Exception as e:
             raise AppException(e, sys) from e
+        
+
+    def get_data_validation_config(self, schema_file_path: Path , data_ingestion_config  : DataIngestionConfig) -> DataValidationConfig:
+        """ Get the data validation configuration object.
+        Args:
+            schema_file_path (Path):  Path( "configs/schema.yaml")
+        Raises:
+            AppException: _description_
+        Returns:
+            DataValidationConfig:  class DataValidationConfig(BaseModel):
+                                    schema_file_path: FilePath
+                                    report_file_dir: Path
+                                    data_validated_test_file_path: Path
+                                    data_validated_train_path: Path
+                                    train_data_file: FilePath
+                                    test_data_file: FilePath """
+        try:
+            logger.info("Getting data validation configuration.")
+            pipeline_config = self.pipeline_config
+            artifact_dir = pipeline_config.artifact_dir
+            train_data_file = data_ingestion_config.ingested_train_file_path
+            test_data_file = data_ingestion_config.ingested_test_data_path
+            data_validation_config_info = self.config_info.data_validation_config
+            validated_test_file_name = data_validation_config_info.validated_test_file
+            validated_train_file_name = data_validation_config_info.validated_train_file
+
+            data_validated_artifact_dir = Path(
+                os.path.join(artifact_dir, data_validation_config_info.data_validation_dir))
+            report_file_dir = os.path.join(data_validated_artifact_dir, data_validation_config_info.report_dir)
+            validated_test_file = os.path.join(data_validated_artifact_dir, validated_test_file_name)
+            validated_train_file = os.path.join(data_validated_artifact_dir, validated_train_file_name)
+
+            create_directories([report_file_dir])
+
+            data_validation_config = DataValidationConfig(schema_file_path=schema_file_path,
+                                                          report_file_dir=report_file_dir,
+                                                          data_validated_test_file_path=validated_test_file,
+                                                          data_validated_train_file_path=validated_train_file,
+                                                          train_data_file=train_data_file,
+                                                          test_data_file=test_data_file)
+            logger.info(f"Data validation config: {data_validation_config.dict()}")
+            return data_validation_config
+
+        except Exception as e:
+            raise AppException(e, sys)

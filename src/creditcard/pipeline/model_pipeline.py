@@ -5,7 +5,7 @@ from pathlib import Path
 
 from creditcard.constants import CURRENT_TIME_STAMP, MODEL_PIPELINE_FILE_PATH
 from creditcard.config.configuration import ConfigurationManager
-from creditcard.components.stage_01_data_ingestion import DataIngestion
+from creditcard.components import DataIngestion,DataValidation
 from creditcard.entity.artifact_entity import *
 from creditcard.entity.config_entity import *
 from creditcard.exception import AppException
@@ -58,6 +58,11 @@ class ApplicationPipeline:
                 data_ingestion_response = data_ingestion.initiate_data_ingestion()
                 running_dict.update(data_ingestion_response.dict())
                 logger.info("data ingestion finished")
+                logger.info("data validation started")
+                data_validation_config = self.config.get_data_validation_config()
+                data_ingestion = DataValidation(data_validation_config_info=data_validation_config)
+                data_ingestion_response = data_ingestion.initiate_data_validation()
+                logger.info("data validation  finished")
                 
             except Exception as e:
                 raise AppException(e, sys) from e
