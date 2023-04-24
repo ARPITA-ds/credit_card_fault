@@ -1,0 +1,25 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src\creditcard\components\stage_01_data_ingestion.py --config=params.yaml
+    deps:
+    - path: src\creditcard\components\stage_01_data_ingestion.py
+      md5: 2c018524e7722c47a6381d27d8e5517b
+      size: 6298
+    params:
+      params.yaml:
+        training_pipeline_config:
+          artifact_dir: artifact
+          experiment_code: Development
+          pipeline_name: CreditCard
+          random_state: 1961
+    outs:
+    - path: artifact\Stage00_data_ingestion\ingested_data\test.csv
+      md5: c4b7f6551e75b042b45f7a8823543cff
+      size: 734499
+    - path: artifact\Stage00_data_ingestion\ingested_data\train.csv
+      md5: 312cfce63f345c68e316acae88295088
+      size: 2942928
+    - path: artifact\Stage00_data_ingestion\raw_data\UCI_Credit_Card.csv
+      md5: 05928af86852df9d28e8aa23c9e0045e
+      size: 3677209

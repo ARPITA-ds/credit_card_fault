@@ -1,0 +1,22 @@
+stages:
+  data_ingestion:
+    cmd: python src\creditcard\components\stage_01_data_ingestion.py --config=params.yaml
+    deps:
+      - src\creditcard\components\stage_01_data_ingestion.py
+    params:
+      - training_pipeline_config
+    outs:
+      - artifact\Stage00_data_ingestion\raw_data\UCI_Credit_Card.csv
+      - artifact\Stage00_data_ingestion\ingested_data\test.csv
+      - artifact\Stage00_data_ingestion\ingested_data\train.csv
+
+
+data_validation:
+    cmd: python src\creditcard\components\stage_02_data_validation.py --config=params.yaml --schema_file=.\configs\schema.yaml
+    deps:
+      - src\creditcard\components\stage_02_data_validation.py
+      - configs\schema.yaml
+      - artifact\Stage00_data_ingestion\ingested_data\test.csv
+      - artifact\Stage00_data_ingestion\ingested_data\train.csv
+    
+      
