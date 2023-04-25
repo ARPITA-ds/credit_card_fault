@@ -144,3 +144,45 @@ class ConfigurationManager:
 
         except Exception as e:
             raise AppException(e, sys)
+        
+
+    def get_data_transformation_config(self, feature_generator_config_file_path: Path,
+                                       schema_file_path : Path , data_validation_config_info : DataValidationConfig ) -> DataTransformationConfig:
+        """ Get the data transformation configuration object.
+        Args:
+            feature_generator_config_file_path (Path): config file path to generate features
+            schema_file_path (_type_):  schema file path to validate data
+        Raises:
+            AppException: _description_
+        Returns:
+            DataTransformationConfig: class DataTransformationConfig(BaseModel):
+                                            data_validated_train_file_path: FilePath
+                                            feature_generator_config_file_path: FilePath
+                                            schema_file_path: FilePath
+                                            preprocessed_object_file_path: Path
+                                            random_state: int
+        """
+        try:
+            pipeline_config = self.pipeline_config
+            artifact_dir = pipeline_config.artifact_dir
+            random_state = pipeline_config.training_random_state
+            schema_file_path = data_validation_config_info.schema_file_path
+            data_transformation_config_info = self.config_info.data_transformation_config
+
+            data_transformation_dir_name = data_transformation_config_info.data_transformation_dir
+            data_transformation_dir = os.path.join(artifact_dir, data_transformation_dir_name)
+            preprocessed_object_dir = data_transformation_config_info.preprocessing_object_dir
+            preprocessed_object_name = data_transformation_config_info.preprocessing_object_file_name
+            preprocessed_object_file_path = os.path.join(data_transformation_dir, preprocessed_object_dir,
+                                                         preprocessed_object_name)
+
+            create_directories([os.path.dirname(preprocessed_object_file_path)])
+            data_transformation_config = DataTransformationConfig(
+                data_validated_train_file_path=data_validation_config_info.data_validated_train_file_path,
+                feature_generator_config_file_path=feature_generator_config_file_path,
+                schema_file_path=schema_file_path,
+                preprocessed_object_file_path=preprocessed_object_file_path,
+                random_state=random_state)
+            return data_transformation_config
+        except Exception as e:
+            raise AppException(e, sys)
