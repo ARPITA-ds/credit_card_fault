@@ -23,3 +23,42 @@ stages:
     - path: artifact\Stage00_data_ingestion\raw_data\UCI_Credit_Card.csv
       md5: 05928af86852df9d28e8aa23c9e0045e
       size: 3677209
+  data_validation:
+    cmd: python src\creditcard\components\stage_02_data_validation.py --config=params.yaml
+      --schema_file=.\configs\schema.yaml
+    deps:
+    - path: artifact\Stage00_data_ingestion\ingested_data\test.csv
+      md5: c4b7f6551e75b042b45f7a8823543cff
+      size: 734499
+    - path: artifact\Stage00_data_ingestion\ingested_data\train.csv
+      md5: 312cfce63f345c68e316acae88295088
+      size: 2942928
+    - path: configs\schema.yaml
+      md5: 419a05ee32bd7fcf1a3203d542b28dc8
+      size: 3667
+    - path: src\creditcard\components\stage_02_data_validation.py
+      md5: 68252c17b1bdd03feccd3f4daee49041
+      size: 9485
+    outs:
+    - path: artifact\stage02_data_validation\validated_test.pkl
+      md5: 4a213c44dc8be694345ca5f1c082f525
+      size: 1201239
+    - path: artifact\stage02_data_validation\validated_train.pkl
+      md5: 30c446999d0e68869331772a1186f8d6
+      size: 4801239
+  data_transformation:
+    cmd: python src\creditcard\components\stage_03_data_transformation.py --config=params.yaml
+      --schema_file=configs\schema.yaml --feature_store=configs\feature_generator.yaml
+    deps:
+    - path: artifact\stage02_data_validation\validated_test.pkl
+      md5: 4a213c44dc8be694345ca5f1c082f525
+      size: 1201239
+    - path: artifact\stage02_data_validation\validated_train.pkl
+      md5: 30c446999d0e68869331772a1186f8d6
+      size: 4801239
+    - path: configs\feature_generator.yaml
+      md5: 7b8e4c16b5a83d73e62712f56f5baa02
+      size: 1024
+    - path: src\creditcard\components\stage_03_data_transformation.py
+      md5: df12fe9ec4c336cfef5feeab95f951c9
+      size: 7263

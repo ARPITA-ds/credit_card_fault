@@ -10,13 +10,24 @@ stages:
       - artifact\Stage00_data_ingestion\ingested_data\test.csv
       - artifact\Stage00_data_ingestion\ingested_data\train.csv
 
+  data_validation:
+      cmd: python src\creditcard\components\stage_02_data_validation.py --config=params.yaml --schema_file=.\configs\schema.yaml
+      deps:
+        - src\creditcard\components\stage_02_data_validation.py
+        - configs\schema.yaml
+        - artifact\Stage00_data_ingestion\ingested_data\test.csv
+        - artifact\Stage00_data_ingestion\ingested_data\train.csv
 
-data_validation:
-    cmd: python src\creditcard\components\stage_02_data_validation.py --config=params.yaml --schema_file=.\configs\schema.yaml
-    deps:
-      - src\creditcard\components\stage_02_data_validation.py
-      - configs\schema.yaml
-      - artifact\Stage00_data_ingestion\ingested_data\test.csv
-      - artifact\Stage00_data_ingestion\ingested_data\train.csv
+      outs:
+        - artifact\stage02_data_validation\validated_test.pkl
+        - artifact\stage02_data_validation\validated_train.pkl
+
+  data_transformation: 
+      cmd: python src\creditcard\components\stage_03_data_transformation.py --config=params.yaml --schema_file=configs\schema.yaml --feature_store=configs\feature_generator.yaml
+      deps:
+        - src\creditcard\components\stage_03_data_transformation.py
+        - configs\feature_generator.yaml
+        - artifact\stage02_data_validation\validated_test.pkl
+        - artifact\stage02_data_validation\validated_train.pkl
     
       
