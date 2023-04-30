@@ -186,3 +186,58 @@ class ConfigurationManager:
             return data_transformation_config
         except Exception as e:
             raise AppException(e, sys)
+        
+
+    def get_model_trainer_config(self, model_config_file_path: str, schema_file_path: str , data_validation_config_info : DataValidationConfig , 
+                                 data_transformation_config_info : DataTransformationConfig) -> ModelTrainerConfig:
+        """ Get the model trainer configuration object.
+        Args:
+            model_config_file_path (str):  model config file path to train optuna model
+            schema_file_path (str): schema file path to validate data
+        Raises:
+            AppException: _description_
+        Returns:
+            ModelTrainerConfig:class ModelTrainerConfig(BaseModel):
+                                model_config_file_path: FilePath
+                                base_accuracy: float
+                                trained_model_file_path: Path
+                                model_report_dir: DirectoryPath
+                                preprocessed_object_file_path: FilePath
+                                to_train_data_path: FilePath
+                                schema_file_path: FilePath
+                                eval_difference: float
+                                eval_param: str
+                                experiment_id: str
+        """
+        try:
+            pipeline_config = self.pipeline_config
+            artifact_dir = pipeline_config.artifact_dir
+            experiment_code = pipeline_config.experiment_code
+            schema_file_path = data_validation_config_info.schema_file_path
+            validated_train_file_path = data_validation_config_info.data_validated_train_file_path
+            model_trainer_config_info = self.config_info.model_trainer_config
+            model_trainer_artifact_dir_name = model_trainer_config_info.model_trainer_dir
+            model_trainer_artifact_dir = os.path.join(artifact_dir, model_trainer_artifact_dir_name)
+            model_report_dir_name = model_trainer_config_info.model_reports_dir
+
+            trained_model_path = os.path.join(model_trainer_artifact_dir, "best_model", "best_model.pkl")
+            model_report_dir = os.path.join(model_trainer_artifact_dir, model_report_dir_name)
+            preprocessed_object_file_path = data_transformation_config_info.preprocessed_object_file_path
+
+            create_directories([os.path.dirname(trained_model_path), model_report_dir])
+
+            model_trainer_config = ModelTrainerConfig(model_config_file_path=model_config_file_path,
+                                                      base_accuracy=model_trainer_config_info.base_accuracy,
+                                                      trained_model_file_path=trained_model_path,
+                                                      model_report_dir=model_report_dir,
+                                                      preprocessed_object_file_path=preprocessed_object_file_path,
+                                                      schema_file_path=schema_file_path,
+                                                      eval_difference=model_trainer_config_info.eval_difference,
+                                                      eval_param=model_trainer_config_info.eval_param,
+                                                      experiment_id=experiment_code,
+                                                      to_train_data_path=validated_train_file_path, )
+
+            return model_trainer_config
+
+        except Exception as e:
+            raise AppException(e, sys)

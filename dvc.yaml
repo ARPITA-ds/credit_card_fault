@@ -29,5 +29,18 @@ stages:
         - configs\feature_generator.yaml
         - artifact\stage02_data_validation\validated_test.pkl
         - artifact\stage02_data_validation\validated_train.pkl
+
+      outs:
+       - artifact\stage03_data_transformation\preprocessing\preprocessing_obj.pkl
+  
+  model_trainer:
+      cmd: python src\creditcard\components\stage_04_model_trainer.py --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml --feature_store=.\configs\feature_generator.yaml
+      deps:
+      - src\creditcard\components\stage_04_model_trainer.py
+      - configs\model_factory.yaml
+      - artifact\stage03_data_transformation\preprocessing\preprocessing_obj.pkl
+      - artifact\stage02_data_validation\validated_train.pkl
+      params:
+      - model_trainer_config.models
     
       

@@ -62,3 +62,7 @@ stages:
     - path: src\creditcard\components\stage_03_data_transformation.py
       md5: df12fe9ec4c336cfef5feeab95f951c9
       size: 7263
+    outs:
+    - path: artifact\stage03_data_transformation\preprocessing\preprocessing_obj.pkl
+      md5: 38dd840c35bcde7f93e7cfd167099521
+      size: 116578

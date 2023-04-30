@@ -8,6 +8,7 @@ loguru~=0.6.0
 ensure==1.0.2
 pydantic~=1.10.6
 catboost~=1.1.1
+xgboost
 pymongo~=4.3.3
 catboost~=1.1.1
 python-box~= 6.0.2
