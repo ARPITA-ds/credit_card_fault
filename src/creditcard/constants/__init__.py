@@ -8,7 +8,7 @@ def get_current_time_stamp():
 ROOT_DIR = os.getcwd()
 CURRENT_TIME_STAMP = get_current_time_stamp()
 
-CONFIG_DIR = os.path.join(ROOT_DIR,'config')
+CONFIG_DIR = os.path.join(ROOT_DIR,'configs')
 
 CONFIG_FILE_PATH = Path("configs/config.yaml")
 PARAMS_FILE_PATH = Path("params.yaml")

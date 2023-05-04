@@ -5,11 +5,11 @@ from pathlib import Path
 
 from creditcard.constants import CURRENT_TIME_STAMP, MODEL_PIPELINE_FILE_PATH
 from creditcard.config.configuration import ConfigurationManager
-from creditcard.components import DataIngestion,DataValidation
+from creditcard.components import DataIngestion,DataValidation,DataTransformation,ModelTrainer
 from creditcard.entity.artifact_entity import *
 from creditcard.entity.config_entity import *
 from creditcard.exception import AppException
-from creditcard.utils.common import write_yaml, read_yaml_as_dict
+from creditcard.utils.common import write_yaml, read_yaml_as_dict,read_yaml
 from creditcard.logger import logger
 from sklearn import set_config
 
@@ -63,6 +63,18 @@ class ApplicationPipeline:
                 data_ingestion = DataValidation(data_validation_config_info=data_validation_config)
                 data_ingestion_response = data_ingestion.initiate_data_validation()
                 logger.info("data validation  finished")
+                logger.info("data transformation started")
+                data_transformation_config = self.config.get_data_transformation_config()
+                data_transformation = DataTransformation(data_transformation_config_info=data_transformation_config)
+                data_transformation_response = data_transformation.initiate_data_transformation()
+                running_dict.update(data_transformation_response.dict())
+                logger.info("data transformation Finished")
+                logger.info("Model trainer started")
+                model_trainer_config_info = self.config.get_model_trainer_config()
+                model_trainer = ModelTrainer(model_trainer_config_info=model_trainer_config_info)
+                model_trainer_response = model_trainer.initiate_model_trainer()
+                running_dict.update(model_trainer_response.dict())
+                logger.info("Model trainer Finished")
                 
             except Exception as e:
                 raise AppException(e, sys) from e
