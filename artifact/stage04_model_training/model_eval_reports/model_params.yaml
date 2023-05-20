@@ -52,9 +52,9 @@ model_6:
     criterion: entropy
     max_depth: 8
     max_leaf_nodes: 10
-    min_samples_leaf: 5
-    n_estimators: 281
-  Model_Best_params_score: 0.763797961666308
+    min_samples_leaf: 3
+    n_estimators: 146
+  Model_Best_params_score: 0.7639171954481602
   Model_class: CatBoostClassifier
   Model_module: catboost
   training_artifact_file_path: artifact\stage04_model_training\model_eval_reports\catboost_study.csv
