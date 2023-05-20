@@ -7,7 +7,6 @@ import numpy
 from box import ConfigBox
 from creditcard.entity import MetricEvalArtifact, MetricReportArtifact
 from creditcard.exception import AppException
-from creditcard.logger import logger
 from ensure import ensure_annotations
 from evidently.metrics import (ClassificationClassBalance,
                                ClassificationClassSeparationPlot,
@@ -83,6 +82,7 @@ def evaluate_classification_model(x_train_eval: numpy.ndarray, y_train: numpy.nd
                                   eval_param: str = "accuracy", experiment_id: str = None,
                                   final_eval: bool = False) -> MetricEvalArtifact:
     """_summary_
+
     Args:
         x_train_eval (numpy.ndarray): trained features 
         y_train (numpy.ndarray): trained target
@@ -97,8 +97,10 @@ def evaluate_classification_model(x_train_eval: numpy.ndarray, y_train: numpy.nd
         experiment_id (str, optional):  experiment if. Defaults to None.
         final_eval (bool, optional): flag to indicate if the model is final. Defaults to False. to specify
         if the model is accepts pandas dataframe or numpy array
+
     Raises:
         AppException: _description_
+
     Returns:
         MetricEvalArtifact: class MetricEvalArtifact(BaseModel):
                                 best_model:  best Model object
@@ -167,4 +169,4 @@ def evaluate_classification_model(x_train_eval: numpy.ndarray, y_train: numpy.nd
     except Exception as e:
         logger.error(e)
         raise AppException(e, sys)
-    return 
+    return best_model
