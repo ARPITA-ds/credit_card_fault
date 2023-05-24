@@ -66,3 +66,27 @@ stages:
     - path: artifact\stage03_data_transformation\preprocessing\preprocessing_obj.pkl
       md5: 38dd840c35bcde7f93e7cfd167099521
       size: 116578
+  model_trainer:
+    cmd: python src\creditcard\components\stage_04_model_trainer.py --config=params.yaml
+      --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
+      --feature_store=.\configs\feature_generator.yaml
+    deps:
+    - path: artifact\stage02_data_validation\validated_train.pkl
+      md5: 30c446999d0e68869331772a1186f8d6
+      size: 4801239
+    - path: artifact\stage03_data_transformation\preprocessing\preprocessing_obj.pkl
+      md5: 38dd840c35bcde7f93e7cfd167099521
+      size: 116578
+    - path: configs\model_factory.yaml
+      md5: 746b8926faf935ae0784f821beeb576f
+      size: 909
+    - path: src\creditcard\components\stage_04_model_trainer.py
+      md5: 7c4e50e46f50d36f0c3aa3d6b444f862
+      size: 9286
+    params:
+      params.yaml:
+        model_trainer_config.models:
+        - GBT
+        - RF
+        - LGBM
+        - CATBOOST
