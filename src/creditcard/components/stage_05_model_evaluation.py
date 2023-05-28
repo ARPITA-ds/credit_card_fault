@@ -11,6 +11,7 @@ from box import ConfigBox
 from creditcard.config import ConfigurationManager
 from creditcard.entity import (MetricEvalArtifact, ModelEvaluationArtifact,
                                ModelEvaluationConfig)
+from creditcard.entity import *
 from creditcard.exception import AppException
 from creditcard.logger import logger
 from creditcard.utils import (evaluate_classification_model, load_object,
