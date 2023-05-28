@@ -1,19 +1,19 @@
 model_2:
   Model_Best_params:
-    ccp_alpha: 0.00021878723670504198
+    ccp_alpha: 0.0002554469016080299
     criterion: friedman_mse
-    learning_rate: 0.012264008116924015
+    learning_rate: 0.07873530371672265
     loss: exponential
-    max_depth: 6
+    max_depth: 10
     max_features: sqrt
-    min_impurity_decrease: 0.17207083394984396
-    min_samples_leaf: 8
-    min_samples_split: 9
-    min_weight_fraction_leaf: 0.000237231167255585
-    n_estimators: 979
-    subsample: 0.9877254326015861
-    tol: 0.008585113030861725
-  Model_Best_params_score: 0.7783075038245431
+    min_impurity_decrease: 0.3728250003759186
+    min_samples_leaf: 10
+    min_samples_split: 6
+    min_weight_fraction_leaf: 0.021766625775714817
+    n_estimators: 359
+    subsample: 0.6643841227812608
+    tol: 0.008522979742345177
+  Model_Best_params_score: 0.777070144231101
   Model_class: GradientBoostingClassifier
   Model_module: sklearn.ensemble
   training_artifact_file_path: artifact\stage04_model_training\model_eval_reports\gbt_study.csv
@@ -40,9 +40,9 @@ model_5:
     criterion: entropy
     max_depth: 9
     max_leaf_nodes: 10
-    min_samples_leaf: 4
-    n_estimators: 329
-  Model_Best_params_score: 0.7638120531082309
+    min_samples_leaf: 2
+    n_estimators: 676
+  Model_Best_params_score: 0.7635910764865594
   Model_class: RandomForestClassifier
   Model_module: sklearn.ensemble
   training_artifact_file_path: artifact\stage04_model_training\model_eval_reports\xgboost_study.csv
@@ -50,11 +50,11 @@ model_6:
   Model_Best_params:
     bootstrap: true
     criterion: entropy
-    max_depth: 8
+    max_depth: 10
     max_leaf_nodes: 10
-    min_samples_leaf: 3
-    n_estimators: 146
-  Model_Best_params_score: 0.7639171954481602
+    min_samples_leaf: 4
+    n_estimators: 118
+  Model_Best_params_score: 0.76359408166489
   Model_class: CatBoostClassifier
   Model_module: catboost
   training_artifact_file_path: artifact\stage04_model_training\model_eval_reports\catboost_study.csv

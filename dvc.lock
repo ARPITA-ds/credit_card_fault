@@ -90,3 +90,13 @@ stages:
         - RF
         - LGBM
         - CATBOOST
+    outs:
+    - path: artifact\stage04_model_training\best_model\best_model.pkl
+      md5: 584873b6eebf25331d7a59624197f32f
+      size: 115
+    - path: artifact\stage04_model_training\model_eval_reports\model_params.yaml
+      md5: c73e9bf89ee0ce0b749861ac34bc2e37
+      size: 1937
+    - path: artifact\stage04_model_training\model_eval_reports\model_report.html
+      md5: 756c96b654fc0eac5a99f95a896e1a15
+      size: 7171932
