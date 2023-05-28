@@ -145,23 +145,20 @@ class ModelTrainer:
 
 
 if __name__ == "__main__":
-    # args_parser = argparse.ArgumentParser()
-    # args_parser.add_argument('--config', dest='config', required=True)
-    # args_parser.add_argument('--feature_store', dest='feature_store', required=True)
-    # args_parser.add_argument('--model_config', dest='model_config', required=True)
-    # args_parser.add_argument('--schema_file', dest='schema', required=True)
-    # args = args_parser.parse_args()
-    from creditcard.constants import CONFIG_DIR , PARAMS_FILE_PATH
-    config = ConfigurationManager(config_file_path=PARAMS_FILE_PATH)
+    args_parser = argparse.ArgumentParser()
+    args_parser.add_argument('--config', dest='config', required=True)
+    args_parser.add_argument('--feature_store', dest='feature_store', required=True)
+    args_parser.add_argument('--model_config', dest='model_config', required=True)
+    args_parser.add_argument('--schema_file', dest='schema', required=True)
+    args = args_parser.parse_args()
+    config = ConfigurationManager(config_file_path=args.config)
     data_ingestion_config = config.get_data_ingestion_config()
-    schema_file_path = os.path.join(CONFIG_DIR, "schema.yaml")
-    feature_generator_config_file_path = os.path.join(CONFIG_DIR,"feature_generator.yaml" )
-    model_config_file_path = os.path.join(CONFIG_DIR, "model_factory.yaml")
-    data_validation_config = config.get_data_validation_config(schema_file_path=schema_file_path , data_ingestion_config=data_ingestion_config)
-    data_transformation_config = config.get_data_transformation_config(feature_generator_config_file_path=feature_generator_config_file_path, schema_file_path=schema_file_path , data_validation_config_info=data_validation_config)
+    data_validation_config = config.get_data_validation_config(schema_file_path=args.schema , data_ingestion_config=data_ingestion_config)
+    data_transformation_config = config.get_data_transformation_config(
+        feature_generator_config_file_path=args.feature_store, schema_file_path=args.schema , data_validation_config_info=data_validation_config)
 
-    model_trainer_config = config.get_model_trainer_config(model_config_file_path=model_config_file_path,
-                                                           schema_file_path=schema_file_path , data_transformation_config_info=data_transformation_config, 
+    model_trainer_config = config.get_model_trainer_config(model_config_file_path=args.model_config,
+                                                           schema_file_path=args.schema , data_transformation_config_info=data_transformation_config, 
                                                            data_validation_config_info= data_validation_config)
 
     model_trainer = ModelTrainer(model_trainer_config_info=model_trainer_config)

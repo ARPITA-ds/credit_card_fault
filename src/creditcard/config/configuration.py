@@ -241,3 +241,103 @@ class ConfigurationManager:
 
         except Exception as e:
             raise AppException(e, sys)
+    
+
+
+    def get_model_evaluation_config(self , schema_file_path : Path, model_config_file_path: Path , pipeline_config_file_path : Path  ,
+                                    data_validation_config_info : DataValidationConfig ,model_train_config : ModelTrainerConfig ) -> ModelEvaluationConfig:
+        """ Get the model evaluation configuration object.
+
+        Raises:
+            AppException: _description_
+
+        Returns:
+            ModelEvaluationConfig:class ModelEvaluationConfig(BaseModel):
+                                            trained_model_path: FilePath
+                                            schema_file_path: FilePath
+                                            train_data_path: FilePath
+                                            test_data_path: FilePath
+                                            pipeline_config_file_path: FilePath
+                                            report_dir: DirectoryPath
+                                            base_accuracy: float
+                                            eval_difference: float
+                                            eval_param: str
+                                            eval_model_dir: DirectoryPath
+                                            eval_model_path : Path
+        """
+        try:
+            model_evaluation_config = self.config_info.model_evaluation_config
+            pipeline_config = self.pipeline_config
+            artifact_dir = pipeline_config.artifact_dir
+            model_eval_dir_name = model_evaluation_config.model_evaluation_dir
+            model_eval_dir = os.path.join(artifact_dir, model_eval_dir_name)
+            eval_model_dir_name = model_evaluation_config.eval_model_dir_name
+            trained_model_path = model_train_config.trained_model_file_path
+            report_dir = os.path.join(model_eval_dir, "model_eval_report")
+            eval_model_dir = os.path.join(model_eval_dir, eval_model_dir_name)
+            eval_model_path = os.path.join(eval_model_dir, model_evaluation_config.evaluated_model_file_name)
+
+            create_directories([report_dir, eval_model_dir])
+            response = ModelEvaluationConfig(trained_model_path = trained_model_path,
+                                            schema_file_path = schema_file_path,
+                                            train_data_path =  data_validation_config_info.data_validated_train_file_path,
+                                            test_data_path = data_validation_config_info.data_validated_test_file_path,
+                                            pipeline_config_file_path = pipeline_config_file_path,
+                                            report_dir = report_dir,
+                                            base_accuracy =  model_evaluation_config.base_accuracy ,
+                                            eval_difference = model_evaluation_config.eval_difference,
+                                            eval_param = model_evaluation_config.eval_param,
+                                            eval_model_dir = eval_model_dir,
+                                            eval_model_path = eval_model_path)
+
+            logger.info(f"Model Evaluation Config: {response}.")
+            return response
+        except Exception as e:
+            raise AppException(e, sys) from e
+
+    def get_model_pusher_config(self , schema_file_path : Path, model_config_file_path : Path, pipeline_config_file_path : Path , 
+                                data_validation_config_info : DataValidationConfig ,model_eval_config  : ModelEvaluationConfig ) -> ModelPusherConfig:
+        """  model pusher configuration object.
+
+        Args:
+            schema_file_path (Path): schema file path
+            production_model_path 
+            model_config_file_path (Path):  model config file path
+            pipeline_config_file_path (Path):  pipeline config file path
+
+        Raises:
+            AppException: _description_
+
+        Returns:
+            ModelPusherConfig:  model pusher configuration object.
+        """
+        try:
+            model_pusher_config_info = self.config_info.model_pusher_config
+            model_pusher_artifact_dir_name = model_pusher_config_info.model_pusher_dir
+            pipeline_config = self.pipeline_config
+            artifact_dir = pipeline_config.artifact_dir
+            model_pusher_artifact_dir = os.path.join(artifact_dir, model_pusher_artifact_dir_name)
+
+            best_model_path = os.path.join(ROOT_DIR, model_pusher_config_info.model_export_dir,
+                                           model_pusher_config_info.best_model_name)
+            production_model_path = os.path.join(ROOT_DIR, model_pusher_config_info.model_export_dir, "production_model.pkl")
+            report_dir = os.path.join(model_pusher_artifact_dir, "Model_eval_report")
+            base_accuracy = model_pusher_config_info.base_accuracy
+            eval_difference = model_pusher_config_info.eval_difference
+            eval_param = model_pusher_config_info.eval_param
+            create_directories([os.path.dirname(best_model_path), report_dir])
+            model_pusher_config = ModelPusherConfig(best_model_path=best_model_path,
+                                                    schema_file_path=schema_file_path,
+                                                    production_model_path = production_model_path,
+                                                    validated_train_path= data_validation_config_info.data_validated_train_file_path ,
+                                                    validated_test_path= data_validation_config_info.data_validated_test_file_path ,
+                                                    evaluated_model_path= model_eval_config.eval_model_path ,
+                                                    report_dir=report_dir,
+                                                    pipeline_config_file_path= pipeline_config_file_path ,
+                                                    base_accuracy=base_accuracy,
+                                                    eval_difference=eval_difference,
+                                                    eval_param=eval_param)
+            logger.info(f"Model pusher config {model_pusher_config}")
+            return model_pusher_config
+        except Exception as e:
+            raise AppException(e, sys) from e
