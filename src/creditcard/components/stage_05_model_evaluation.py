@@ -3,7 +3,7 @@ import os
 import sys
 import warnings
 from pathlib import Path
-from pydantic import BaseModel,DirectoryPath,FilePath
+
 
 import pandas
 import numpy
@@ -12,7 +12,8 @@ from box import ConfigBox
 from creditcard.config import ConfigurationManager
 from creditcard.entity import (MetricEvalArtifact, ModelEvaluationArtifact,
                                ModelEvaluationConfig)
-from creditcard.entity import (BaseModel,EstimatorModel)
+
+from creditcard.entity import BaseModel,EstimatorModel
 from creditcard.exception import AppException
 from creditcard.logger import logger
 from creditcard.utils import (evaluate_classification_model, load_object,
