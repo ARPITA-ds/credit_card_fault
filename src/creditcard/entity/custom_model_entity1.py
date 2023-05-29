@@ -6,7 +6,8 @@ from pathlib import Path
 from ensure import ensure_annotations
 
 
-class BaseModel1:
+
+class BaseModel:
     """model estimator : Train the model and save the model to pickle """
 
     @ensure_annotations
@@ -46,7 +47,7 @@ class BaseModel1:
         return f"{type(self.trained_model_object).__name__}()"
 
 
-class EstimatorModel1:
+class EstimatorModel:
     """model estimator : Train the model and save the model to pickle """
 
     @ensure_annotations

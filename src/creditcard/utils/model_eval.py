@@ -1,12 +1,14 @@
 import os
 import sys
 from datetime import datetime
+from pydantic import BaseModel,DirectoryPath,FilePath
 
 import pandas
 import numpy
 from box import ConfigBox
 from creditcard.entity import MetricEvalArtifact, MetricReportArtifact
-from creditcard.entity import *
+from creditcard.entity import BaseModel,EstimatorModel
+
 from creditcard.exception import AppException
 from ensure import ensure_annotations
 from evidently.metrics import (ClassificationClassBalance,
@@ -82,7 +84,7 @@ def evaluate_classification_model(x_train_eval: numpy.ndarray, y_train: numpy.nd
                                   report_dir: str, eval_difference: float, estimators: list, columns: list,
                                   eval_param: str = "accuracy", experiment_id: str = None,
                                   final_eval: bool = False) -> MetricEvalArtifact:
-    from creditcard.entity import BaseModel1,EstimatorModel1
+    from creditcard.entity import (BaseModel,EstimatorModel)
     """_summary_
 
     Args:
