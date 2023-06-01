@@ -81,8 +81,8 @@ stages:
       md5: 746b8926faf935ae0784f821beeb576f
       size: 909
     - path: src\creditcard\components\stage_04_model_trainer.py
-      md5: 7c4e50e46f50d36f0c3aa3d6b444f862
-      size: 9286
+      md5: b2015dab069ca755a887998b27a221c1
+      size: 9291
     params:
       params.yaml:
         model_trainer_config.models:
@@ -92,11 +92,27 @@ stages:
         - CATBOOST
     outs:
     - path: artifact\stage04_model_training\best_model\best_model.pkl
-      md5: 584873b6eebf25331d7a59624197f32f
-      size: 115
+      md5: 9f8e57c9c28dcc4957f713646440406e
+      size: 448837
     - path: artifact\stage04_model_training\model_eval_reports\model_params.yaml
-      md5: c73e9bf89ee0ce0b749861ac34bc2e37
-      size: 1937
+      md5: 139e476f7b3465b47ae2f6c3691d400e
+      size: 1942
     - path: artifact\stage04_model_training\model_eval_reports\model_report.html
-      md5: 756c96b654fc0eac5a99f95a896e1a15
-      size: 7171932
+      md5: a58e00202689b00b95581ce9b6b909d4
+      size: 7037566
+  model_evaluation:
+    cmd: python src\CreditCard\components\stage_05_model_evaluation.py --feature_store=.\configs\feature_generator.yaml
+      --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
+    deps:
+    - path: artifact\stage02_data_validation\validated_test.pkl
+      md5: 4a213c44dc8be694345ca5f1c082f525
+      size: 1201239
+    - path: artifact\stage02_data_validation\validated_train.pkl
+      md5: 30c446999d0e68869331772a1186f8d6
+      size: 4801239
+    - path: artifact\stage04_model_training\best_model\best_model.pkl
+      md5: 9f8e57c9c28dcc4957f713646440406e
+      size: 448837
+    - path: src\CreditCard\components\stage_05_model_evaluation.py
+      md5: 75c3e93d28375d4e8f1b165bd592e187
+      size: 9202

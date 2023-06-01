@@ -8,7 +8,7 @@ import numpy
 import pandas
 
 from creditcard.config import ConfigurationManager
-from creditcard.entity import (BaseModel, ModelTrainerArtifact, ModelTrainerConfig)
+from creditcard.entity import (CustomModel, ModelTrainerArtifact, ModelTrainerConfig)
 from creditcard.exception import AppException
 from creditcard.logger import logger
 from creditcard.model_factory.model_factory import ModelFactory
@@ -99,7 +99,7 @@ class ModelTrainer:
             base_model_path = os.path.join(os.path.dirname(self.model_trainer_config_info.trained_model_file_path), "base_model.pkl")
             save_object(file_path=Path(base_model_path), obj=best_model)
 
-            base_model = BaseModel1(trained_model_object=best_model, preprocessing_object=self.preprocessing_obj)
+            base_model =  CustomModel(trained_model_object=best_model, preprocessing_object=self.preprocessing_obj)
             save_object(file_path=Path(self.model_trainer_config_info.trained_model_file_path), obj=base_model)
 
             logger.info(f"{'>>' * 30}Base model done{'<<' * 30} ")

@@ -16,7 +16,7 @@ data_validation_config:
   validated_test_file: validated_test.pkl
   validated_train_file: validated_train.pkl
 model_evaluation_config:
-  base_accuracy: 0.5
+  base_accuracy: 0.8035
   eval_difference: 0.05
   eval_model_dir_name: evaluated_model_dir
   eval_param: accuracy

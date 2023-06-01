@@ -7,7 +7,7 @@ from ensure import ensure_annotations
 
 
 
-class BaseModel:
+class CustomModel:
     """model estimator : Train the model and save the model to pickle """
 
     @ensure_annotations

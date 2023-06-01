@@ -11,5 +11,5 @@ from creditcard.entity.config_entity import (DataIngestionConfig,
                                              ModelEvaluationConfig,
                                              ModelTrainerConfig,
                                              TrainingPipelineConfig, ModelPusherConfig , OptunaTrainingConfig)
-from creditcard.entity.custom_model_entity1 import BaseModel, EstimatorModel
+from creditcard.entity.custom_model_entity import CustomModel,EstimatorModel
 from creditcard.entity.prediction_entity import CreditData
