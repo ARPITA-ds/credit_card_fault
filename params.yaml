@@ -23,7 +23,7 @@ model_evaluation_config:
   evaluated_model_file_name: evaluated_model.pkl
   model_evaluation_dir: stage_05_model_evaluation
 model_pusher_config:
-  base_accuracy: 0.5
+  base_accuracy: 0.8035
   best_model_name: best_model.pkl
   eval_difference: 0.02
   eval_param: accuracy

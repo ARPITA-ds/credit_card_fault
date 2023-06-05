@@ -101,7 +101,7 @@ stages:
       md5: a58e00202689b00b95581ce9b6b909d4
       size: 7037566
   model_evaluation:
-    cmd: python src\CreditCard\components\stage_05_model_evaluation.py --feature_store=.\configs\feature_generator.yaml
+    cmd: python src\creditcard\components\stage_05_model_evaluation.py --feature_store=.\configs\feature_generator.yaml
       --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
     deps:
     - path: artifact\stage02_data_validation\validated_test.pkl
@@ -113,6 +113,32 @@ stages:
     - path: artifact\stage04_model_training\best_model\best_model.pkl
       md5: 9f8e57c9c28dcc4957f713646440406e
       size: 448837
-    - path: src\CreditCard\components\stage_05_model_evaluation.py
+    - path: src\creditcard\components\stage_05_model_evaluation.py
       md5: 75c3e93d28375d4e8f1b165bd592e187
       size: 9202
+    outs:
+    - path: artifact\stage_05_model_evaluation\evaluated_model_dir\evaluated_model.pkl
+      md5: 0e2d78b7dd28c5ec85e7ae47ea42717c
+      size: 450483
+    - path: artifact\stage_05_model_evaluation\evaluated_model_dir\model_eval_report.html
+      md5: 81b6be3387be7b094ee91506527801b2
+      size: 8059050
+    - path: artifact\stage_05_model_evaluation\evaluated_model_dir\model_eval_report.json
+      md5: b2dc46ca0c1cf59d0dc47e918e897edd
+      size: 821
+  model_pusher:
+    cmd: python src\creditcard\components\stage_06_model_pusher.py --feature_store=.\configs\feature_generator.yaml
+      --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
+    deps:
+    - path: artifact\stage02_data_validation\validated_test.pkl
+      md5: 4a213c44dc8be694345ca5f1c082f525
+      size: 1201239
+    - path: artifact\stage02_data_validation\validated_train.pkl
+      md5: 30c446999d0e68869331772a1186f8d6
+      size: 4801239
+    - path: artifact\stage_05_model_evaluation\evaluated_model_dir\evaluated_model.pkl
+      md5: 0e2d78b7dd28c5ec85e7ae47ea42717c
+      size: 450483
+    - path: src\creditcard\components\stage_06_model_pusher.py
+      md5: 1e30102dcfd07351e055f73fbe63b711
+      size: 10068

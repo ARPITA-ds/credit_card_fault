@@ -53,9 +53,35 @@ stages:
            cache: false
 
   model_evaluation:
-      cmd : python src\CreditCard\components\stage_05_model_evaluation.py --feature_store=.\configs\feature_generator.yaml --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
+      cmd : python src\creditcard\components\stage_05_model_evaluation.py --feature_store=.\configs\feature_generator.yaml --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
       deps:
-        - src\CreditCard\components\stage_05_model_evaluation.py
+        - src\creditcard\components\stage_05_model_evaluation.py
         - artifact\stage04_model_training\best_model\best_model.pkl
         - artifact\stage02_data_validation\validated_test.pkl
         - artifact\stage02_data_validation\validated_train.pkl
+
+      outs:
+        - artifact\stage_05_model_evaluation\evaluated_model_dir\model_eval_report.html:
+           cache: false
+        - artifact\stage_05_model_evaluation\evaluated_model_dir\evaluated_model.pkl:
+           cache: false
+      metrics:
+        - artifact\stage_05_model_evaluation\evaluated_model_dir\model_eval_report.json:
+           cache: false
+
+  model_pusher:
+      cmd: python src\creditcard\components\stage_06_model_pusher.py --feature_store=.\configs\feature_generator.yaml --config=params.yaml --schema_file=.\configs\schema.yaml --model_config=.\configs\model_factory.yaml
+      deps:
+        - src\creditcard\components\stage_06_model_pusher.py
+        - artifact\stage02_data_validation\validated_train.pkl
+        - artifact\stage02_data_validation\validated_test.pkl
+        - artifact\stage_05_model_evaluation\evaluated_model_dir\evaluated_model.pkl
+
+      outs:
+        - artifact/stage_06_model_pusher/Model_eval_report/model_eval_report.html:
+           cache: false
+        - production_model/best_model.pkl:
+           cache: false
+      metrics:
+        - artifact/stage_06_model_pusher/Model_eval_report/model_eval_report.json:
+           cache: false
